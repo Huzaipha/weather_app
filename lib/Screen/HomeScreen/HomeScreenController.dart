@@ -1,6 +1,4 @@
-// import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -37,7 +35,7 @@ class WeatherController extends GetxController {
       tempMax: 0.0,
       pressure: 0,
       humidity: 0,
-      seaLevel: 0, // Provide a default value for seaLevel
+      seaLevel: 0,
       grndLevel: 0,
       cityName: 'Unknown',
     ),
@@ -46,8 +44,8 @@ class WeatherController extends GetxController {
     clouds: Clouds(all: 0),
     dt: 0,
     sys: Sys(
-      type: 0, // Provide a default value for type
-      id: 0, // Provide a default value for id
+      type: 0,
+      id: 0,
       country: '',
       sunrise: 0,
       sunset: 0,
@@ -66,13 +64,12 @@ class WeatherController extends GetxController {
 
   void fetchWeatherData() async {
     var apiUrl = Uri.parse(
-        'https://api.openweathermap.org/data/2.5/weather?lat=33.6995&lon=73.0363&appid=adf0372fe5bedc55e7549e69301e811c');
+        'https://api.openweathermap.org/data/2.5/weather?q=Islamabad,pk&APPID=adf0372fe5bedc55e7549e69301e811c');
 
     try {
       var response = await http.get(apiUrl);
       if (response.statusCode == 200) {
         var jsonData = jsonDecode(response.body);
-        // Use update method to update reactive variable
         weatherData.value = WeatherModel.fromJson(jsonData);
       } else {
         throw Exception('Failed to load weather data');
@@ -82,10 +79,8 @@ class WeatherController extends GetxController {
     }
   }
 
-  // Example of using ever to perform actions on weatherData change
   void exampleActionOnWeatherChange() {
     ever(weatherData, (_) {
-      // Perform actions based on weatherData changes
       print('Weather data updated: ${weatherData.value.name}');
     });
   }
